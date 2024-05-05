@@ -1,42 +1,41 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Building } from './schema/building.schema';
 import { CreateBuildingDto } from './dto/create-building.dto';
 import { UpdateBuildingDto } from './dto/update-building.dto';
+import { isUUID } from 'class-validator';
 
 @Injectable()
 export class BuildingsService {
 
   constructor(@InjectModel(Building.name) private readonly buildingModel: Model<Building> ) {}
-
-  /**
-   * Creates a new building.
-   * @param createBuildingDto - The data for creating the building.
-   * @returns A promise that resolves to the created building.
-   */
-  async create(createBuildingDto: CreateBuildingDto): Promise<Building> {
-    const createdBuilding = new this.buildingModel(createBuildingDto);
-    return createdBuilding.save();
+  
+  async createBuilding(createBuildingDto: CreateBuildingDto): Promise<Building> {
+    const createdBuilding = await this.buildingModel.create(createBuildingDto);
+    return createdBuilding;
   }
 
-  /**
-   * Retrieves all buildings from the database.
-   * @returns A promise that resolves to an array of Building objects.
-   */
   async findAll(): Promise<Building[]> {
-    return this.buildingModel.find().exec();
+    const buildings = await this.buildingModel.find().exec();
+    return buildings;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} building`;
+  async findOne(id: string) {
+    if (!isUUID(id)) throw new BadRequestException(`${id} is not a valid UUID.`);
+    const building = await this.buildingModel.findById(id).exec();
+    return building;
   }
 
-  update(id: number, updateBuildingDto: UpdateBuildingDto) {
-    return `This action updates a #${id} building`;
+  async updateBuilding(id: string, updateBuildingDto: UpdateBuildingDto) {
+    if (!isUUID(id)) throw new BadRequestException(`${id} is not a valid UUID.`);
+    const buildingUpdated = await this.buildingModel.findByIdAndUpdate(id, updateBuildingDto, { new: true });
+    return buildingUpdated;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} building`;
+  async removeBuilding(id: string) {
+    if (!isUUID(id)) throw new BadRequestException(`${id} is not a valid UUID.`);
+    const buildingDeleted = await this.buildingModel.findByIdAndDelete(id);
+    return buildingDeleted;
   }
 }

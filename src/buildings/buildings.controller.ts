@@ -6,7 +6,6 @@ import {
   Patch,
   Param,
   Delete,
-  BadRequestException,
 } from '@nestjs/common';
 import { BuildingsService } from './buildings.service';
 import { CreateBuildingDto } from './dto/create-building.dto';
@@ -17,19 +16,8 @@ export class BuildingsController {
   constructor(private readonly buildingsService: BuildingsService) {}
 
   @Post()
-  /**
-    * Creates a new building.
-    * @param createBuildingDto - The data for creating the building.
-    * @returns The newly created building.
-    * @throws BadRequestException if there is an error creating the building.
-    */
   async create(@Body() createBuildingDto: CreateBuildingDto) {
-    try {
-      const buildingCreated = await this.buildingsService.create(createBuildingDto);
-      return buildingCreated;
-    } catch (error) {
-      throw new BadRequestException(error.message);
-    }
+    return await this.buildingsService.createBuilding(createBuildingDto);
   }
 
   @Get()
@@ -39,7 +27,7 @@ export class BuildingsController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.buildingsService.findOne(+id);
+    return this.buildingsService.findOne(id);
   }
 
   @Patch(':id')
@@ -47,11 +35,11 @@ export class BuildingsController {
     @Param('id') id: string,
     @Body() updateBuildingDto: UpdateBuildingDto,
   ) {
-    return this.buildingsService.update(+id, updateBuildingDto);
+    return this.buildingsService.updateBuilding(id, updateBuildingDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.buildingsService.remove(+id);
+    return this.buildingsService.removeBuilding(id);
   }
 }

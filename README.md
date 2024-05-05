@@ -1,3 +1,3 @@
-# Optimo-Back-End
+# optimo-backend
 
-sadsd
+Optimó: Simplificando la Gestión de Espacios con Tecnología Inteligente

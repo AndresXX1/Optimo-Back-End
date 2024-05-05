@@ -9,7 +9,7 @@ export class FloorsController {
 
   @Post()
   create(@Body() createFloorDto: CreateFloorDto) {
-    return this.floorsService.create(createFloorDto);
+    return this.floorsService.createFloor(createFloorDto);
   }
 
   @Get()
@@ -19,16 +19,16 @@ export class FloorsController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.floorsService.findOne(+id);
+    return this.floorsService.findOne(id);
   }
-
+  
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateFloorDto: UpdateFloorDto) {
-    return this.floorsService.update(+id, updateFloorDto);
+  update(@Param('id') id: string,@Body() updateFloorDto: UpdateFloorDto) {
+    return this.floorsService.updateFloor(id, updateFloorDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.floorsService.remove(+id);
+    return this.floorsService.removeFloor(id);
   }
 }
