@@ -7,7 +7,7 @@ import { UserModule } from './user/user.module';
 import { BookingsModule } from './bookings/bookings.module';
 
 import { RoomsModule } from './rooms/rooms.module';
-import { FloorsModule } from './floors/floors.module';
+
 import { MailerModule } from './mailer/mailer.module';
 import { ConfigModule } from '@nestjs/config';
 import { BuildingsModule } from './buildings/buildings.module';
@@ -27,7 +27,7 @@ import { BuildingsModule } from './buildings/buildings.module';
     BookingsModule,
 
     RoomsModule,
-    FloorsModule,
+   
 
     MailerModule,
   ],

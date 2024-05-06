@@ -1,5 +1,5 @@
 import { IsString, IsNotEmpty } from 'class-validator';
-import { Floor } from 'src/floors/schema/floor.schema';
+
 
 export class CreateBuildingDto {
   @IsString()
@@ -26,6 +26,5 @@ export class CreateBuildingDto {
   @IsNotEmpty()
   owner: string;
 
-  @IsNotEmpty()
-  Floors: Floor[];
+
 }

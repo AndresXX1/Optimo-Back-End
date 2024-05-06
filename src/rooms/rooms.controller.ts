@@ -5,30 +5,30 @@ import { UpdateRoomDto } from './dto/update-room.dto';
 
 @Controller('rooms')
 export class RoomsController {
-  constructor(private readonly roomsService: RoomsService) {}
+ constructor(private readonly roomsService: RoomsService) {}
 
-  @Post(':floorId/types')
-  create(@Body() createRoomDto: CreateRoomDto, @Param('floorId') floorId: string) {
-    return this.roomsService.createRoom(floorId, createRoomDto);
-  }
+ @Post()
+ create(@Body() createRoomDto: CreateRoomDto) {
+    return this.roomsService.createRoom(createRoomDto);
+ }
 
-  @Get(':floorId')
-  findAllByFloor(@Param('floorId') floorId: string){
-    return this.roomsService.findAllByFloor(floorId);
-  }
+ @Get()
+ findAllByFloor() {
+    return this.roomsService.findAllByFloor();
+ }
 
-  @Get(':floorId/:roomId')
-  findOne(@Param('id') roomId: string) {
+ @Get(':id')
+ findOne(@Param('id') roomId: string) {
     return this.roomsService.findOne(roomId);
-  }
+ }
 
-  @Patch(':floorId/types/:roomId')
-  update(@Param('floorId') floorId: string, @Param('roomId') roomId: string, @Body() updateRoomDto: UpdateRoomDto) {
-    return this.roomsService.update(floorId, roomId, updateRoomDto);
-  }
+ @Patch(':id')
+ update(@Param('id') roomId: string, @Body() updateRoomDto: UpdateRoomDto) {
+    return this.roomsService.update(roomId, updateRoomDto);
+ }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
+ @Delete(':id')
+ remove(@Param('id') id: string) {
     return this.roomsService.remove(id);
-  }
+ }
 }
