@@ -1,5 +1,6 @@
 export enum FindBookingBy {
-  'User' = 'user',
-  'Room' = 'room',
-  'Floor' = 'floor',
+  'user' = 'user',
+  'state' = 'state',
+  '_id' = '_id',
+  'all' = 'all',
 }

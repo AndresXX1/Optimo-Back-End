@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty } from 'class-validator';
+import { IsString, IsNotEmpty, IsNumber, IsEnum } from 'class-validator';
 import { Booking } from 'src/bookings/schema/booking.schema';
 
 export class CreateRoomDto {
@@ -21,4 +21,17 @@ export class CreateRoomDto {
     @IsString()
     @IsNotEmpty()
     type: string;
+    
+    @IsNumber()
+    @IsNotEmpty()
+    floorNumber: number;
+
+    @IsString()
+    description: string;
+
+    @IsString()
+    images: string;
+
+    @IsEnum(['Activo', 'Inactivo'])
+    state: string;
 }

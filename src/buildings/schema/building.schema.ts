@@ -23,9 +23,12 @@ export class Building {
 
   @Prop({ required: true })
   owner: string;
+  
+  @Prop()
+  blueprints: string;
 
-  @Prop({ required: true, type: [{type: mongoose.Schema.Types.ObjectId, ref: 'Floor'}] })
-  floors: string[];
+  @Prop({ required: true, type: [{type: mongoose.Schema.Types.ObjectId, ref: 'Room'}] })
+  rooms: string[];
 }
 
 export const BuildingSchema = SchemaFactory.createForClass(Building);

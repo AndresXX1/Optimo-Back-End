@@ -1,10 +1,13 @@
+import { Transform } from 'class-transformer';
 import {
   IsBoolean,
   IsDate,
+  IsEnum,
   IsNotEmpty,
   IsOptional,
   IsString,
 } from 'class-validator';
+import { BookingState } from '../enums/bookingState';
 
 export class UpdateBookingDto {
   @IsNotEmpty()
@@ -13,17 +16,19 @@ export class UpdateBookingDto {
 
   @IsOptional()
   @IsDate()
-  day: Date;
+  @Transform(({ value }) => new Date(Date.parse(value)))
+  startTime: Date;
+
+  @IsOptional()
+  @IsDate()
+  @Transform(({ value }) => new Date(Date.parse(value)))
+  endingTime: Date;
 
   @IsOptional()
   @IsString()
-  startTime: string;
+  comment: string;
 
   @IsOptional()
-  @IsString()
-  endingTime: string;
-
-  @IsOptional()
-  @IsBoolean()
-  busy: string;
+  @IsEnum(BookingState)
+  state: BookingState;
 }

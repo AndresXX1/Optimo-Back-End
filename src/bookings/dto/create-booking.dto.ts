@@ -1,23 +1,26 @@
-import { IsDate, IsNotEmpty, IsString } from 'class-validator';
+import { Transform } from 'class-transformer';
+import { IsDate, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class CreateBookingDto {
   @IsNotEmpty()
   @IsString()
-  userId: string;
+  user: string;
 
   @IsNotEmpty()
   @IsString()
-  roomId: string;
+  room: string;
+
+  @IsOptional()
+  @IsString()
+  comment: string;
 
   @IsNotEmpty()
   @IsDate()
-  day: Date;
+  @Transform(({ value }) => new Date(Date.parse(value)))
+  startTime: Date;
 
   @IsNotEmpty()
-  @IsString()
-  startTime: string;
-
-  @IsNotEmpty()
-  @IsString()
-  endingTime: string;
+  @IsDate()
+  @Transform(({ value }) => new Date(Date.parse(value)))
+  endingTime: Date;
 }

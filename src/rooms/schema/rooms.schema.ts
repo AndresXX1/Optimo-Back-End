@@ -9,7 +9,10 @@ export class Room {
     @Prop({ required: true })
     name: string;
 
-    @Prop({ required: true, type: mongoose.Schema.Types.ObjectId, ref: 'Booking', default: null})
+    @Prop()
+    description: string;
+
+    @Prop({ required: true, type: [{type: mongoose.Schema.Types.ObjectId, ref: 'Booking'}]})
     booking: string[];
 
     @Prop({ required: true })
@@ -20,6 +23,18 @@ export class Room {
 
     @Prop({ required: true })
     type: string;
+
+    @Prop({ required: true })
+    floorNumber: number;    
+
+    @Prop()
+    images: string;
+
+    @Prop({ defaultOptions: ['Activo', 'Inactivo'] })
+    state: string;
+
+    @Prop({ default: Date.now })
+    createdAt: Date;
 }
 
 export const RoomSchema = SchemaFactory.createForClass(Room);

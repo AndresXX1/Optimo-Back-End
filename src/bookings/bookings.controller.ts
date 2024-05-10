@@ -17,8 +17,6 @@ import { Auth } from 'src/common/decorators/auth.decorator';
 import { Role } from 'src/common/enums/rol.enum';
 import { ActiveUser } from 'src/common/decorators/activeUser.decorator';
 import { IUserRequest } from 'src/common/interfaces/requestUser.interface';
-import { FindBookingBy } from 'src/bookings/enums/findBookingBy.enum';
-
 import { BookingHandlerDto } from './dto/booking-handler.dto';
 import { UpdateBookingDto } from './dto/update-booking.dto';
 
@@ -46,5 +44,17 @@ export class BookingsController {
   @Put()
   UpdateBooking(@Body() bookingToUpdate: UpdateBookingDto) {
     return this.bookingsService.updateBookingById(bookingToUpdate);
+  }
+  @Get('/byMonth')
+  getBookingsByDate() {
+    return this.bookingsService.getBookingsByMonth();
+  }
+  @Get('/byWeek')
+  getBookingsByWeek() {
+    return this.bookingsService.getBookingsThisWeek();
+  }
+  @Get('/byDay/:day')
+  getBookingsByDay(@Param('day') day: string) {
+    return this.bookingsService.getBookingsByDay(day);
   }
 }

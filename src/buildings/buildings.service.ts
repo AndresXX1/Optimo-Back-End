@@ -4,38 +4,53 @@ import { Model } from 'mongoose';
 import { Building } from './schema/building.schema';
 import { CreateBuildingDto } from './dto/create-building.dto';
 import { UpdateBuildingDto } from './dto/update-building.dto';
-import { isUUID } from 'class-validator';
 
 @Injectable()
 export class BuildingsService {
+  constructor(
+    @InjectModel(Building.name) private readonly buildingModel: Model<Building>,
+  ) {}
 
-  constructor(@InjectModel(Building.name) private readonly buildingModel: Model<Building> ) {}
-  
-  async createBuilding(createBuildingDto: CreateBuildingDto): Promise<Building> {
+  async createBuilding(
+    createBuildingDto: CreateBuildingDto,
+  ): Promise<Building> {
     const createdBuilding = await this.buildingModel.create(createBuildingDto);
     return createdBuilding;
   }
 
   async findAll(): Promise<Building[]> {
-    const buildings = await this.buildingModel.find().exec();
+    const buildings = await this.buildingModel
+      .find()
+      .populate('rooms')
+      .lean()
+      .exec();
     return buildings;
   }
 
-  async findOne(id: string) {
-    if (!isUUID(id)) throw new BadRequestException(`${id} is not a valid UUID.`);
-    const building = await this.buildingModel.findById(id).exec();
+  async findOne(id: string): Promise<Building> {
+    const building = await this.buildingModel
+      .findById(id)
+      .populate('rooms')
+      .lean()
+      .exec();
     return building;
   }
 
-  async updateBuilding(id: string, updateBuildingDto: UpdateBuildingDto) {
-    if (!isUUID(id)) throw new BadRequestException(`${id} is not a valid UUID.`);
-    const buildingUpdated = await this.buildingModel.findByIdAndUpdate(id, updateBuildingDto, { new: true });
+  async updateBuilding(id: string, updateBuildingDto: UpdateBuildingDto): Promise<Building> {
+    const buildingUpdated = await this.buildingModel
+      .findByIdAndUpdate(id, updateBuildingDto, { new: true })
+      .populate('rooms')
+      .lean()
+      .exec();
     return buildingUpdated;
   }
 
-  async removeBuilding(id: string) {
-    if (!isUUID(id)) throw new BadRequestException(`${id} is not a valid UUID.`);
-    const buildingDeleted = await this.buildingModel.findByIdAndDelete(id);
+  async removeBuilding(id: string): Promise<Building> {
+    const buildingDeleted = await this.buildingModel
+      .findByIdAndDelete(id)
+      .populate('rooms')
+      .lean()
+      .exec();
     return buildingDeleted;
   }
 }

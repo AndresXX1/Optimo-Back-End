@@ -1,34 +1,48 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { RoomsService } from './rooms.service';
 import { CreateRoomDto } from './dto/create-room.dto';
 import { UpdateRoomDto } from './dto/update-room.dto';
 
+interface Order {
+  type: 'asc' | 'desc';
+}
+
 @Controller('rooms')
 export class RoomsController {
- constructor(private readonly roomsService: RoomsService) {}
+  constructor(private readonly roomsService: RoomsService) {}
 
- @Post()
- create(@Body() createRoomDto: CreateRoomDto) {
-    return this.roomsService.createRoom(createRoomDto);
- }
+  @Post(':buildingId/types')
+  create(@Body() createRoomDto: CreateRoomDto, @Param('buildingId') buildingId: string) {
+    return this.roomsService.createRoom(buildingId, createRoomDto);
+  }
 
- @Get()
- findAllByFloor() {
-    return this.roomsService.findAllByFloor();
- }
+  @Get('/findByBuilding/:buildingId')
+  findAllByFloor(@Param('buildingId') buildingId: string) {
+    return this.roomsService.findAllByBuilding(buildingId);
+  }  
 
- @Get(':id')
- findOne(@Param('id') roomId: string) {
-    return this.roomsService.findOne(roomId);
- }
+  @Get('/findByBuildingSorted/:buildingId')
+  findAllByBuildingSortedByFloor(@Param('buildingId') buildingId: string, @Query('order') order: Order['type']){
+    return this.roomsService.findAllByBuildingSortedByFloor(buildingId, order);
+  }
 
- @Patch(':id')
- update(@Param('id') roomId: string, @Body() updateRoomDto: UpdateRoomDto) {
-    return this.roomsService.update(roomId, updateRoomDto);
- }
+  @Get('/count')
+  findNumberOfRooms() {
+    return this.roomsService.findNumberOfRooms();
+  }
 
- @Delete(':id')
- remove(@Param('id') id: string) {
-    return this.roomsService.remove(id);
- }
+  @Get('/findByName/:buildingId/search')
+  findOneByName(@Param('buildingId') buildingId: string, @Query('name') name: string) {
+    return this.roomsService.findOneByName(buildingId, name);
+  }
+
+  @Patch(':buildingId/types/:roomId')
+  update(@Param('buildingId') buildingId: string, @Param('roomId') roomId: string, @Body() updateRoomDto: UpdateRoomDto) {
+    return this.roomsService.update(buildingId, roomId, updateRoomDto);
+  }
+
+  @Delete('/delete/:buildingId/types/:roomId')
+  remove(@Param('buildingId') buildingId: string, @Param('roomId') roomId: string) {
+    return this.roomsService.remove(buildingId, roomId);
+  }
 }

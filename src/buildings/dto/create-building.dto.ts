@@ -1,5 +1,5 @@
 import { IsString, IsNotEmpty } from 'class-validator';
-
+import { Room } from 'src/rooms/schema/rooms.schema';
 
 export class CreateBuildingDto {
   @IsString()
@@ -25,6 +25,11 @@ export class CreateBuildingDto {
   @IsString()
   @IsNotEmpty()
   owner: string;
+  
+  @IsString()
+  @IsNotEmpty()
+  blueprints: string;
 
-
+  @IsNotEmpty()
+  room: Room[];
 }
