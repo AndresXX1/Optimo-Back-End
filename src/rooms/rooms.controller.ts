@@ -36,7 +36,7 @@ export class RoomsController {
     return this.roomsService.findOneByName(buildingId, name);
   }
 
-  @Patch('/:roomId')
+  @Patch(':buildingId/types/:roomId')
   update(@Param('buildingId') buildingId: string, @Param('roomId') roomId: string, @Body() updateRoomDto: UpdateRoomDto) {
     return this.roomsService.update(buildingId, roomId, updateRoomDto);
   }
