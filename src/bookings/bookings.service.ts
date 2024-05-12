@@ -26,6 +26,7 @@ import {
   isWithinInterval,
   startOfWeek,
 } from 'date-fns';
+import { UserService } from 'src/user/user.service';
 
 @Injectable()
 export class BookingsService {
@@ -58,11 +59,11 @@ export class BookingsService {
 
   //!TODO: Revisar las fechas limites de los espacios antes de hacer una reserva
   async createBooking(createBookingDto: CreateBookingDto, user: IUserRequest) {
-    console.log(await this.checkBookings(createBookingDto));
     try {
       if (await this.checkBookings(createBookingDto)) {
-        throw new BadRequestException();
+        throw new BadRequestException('Bookings already exist');
       }
+      console.log(createBookingDto);
       const booking = new this.bookingModel({
         ...createBookingDto,
         bookingToken: uuidv4(),

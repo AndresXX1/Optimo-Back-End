@@ -29,6 +29,7 @@ export class BookingsController {
     @Body() createBookingDto: CreateBookingDto,
     @ActiveUser() user: IUserRequest,
   ) {
+    console.log(createBookingDto);
     return this.bookingsService.createBooking(createBookingDto, user);
   }
 

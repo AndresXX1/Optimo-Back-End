@@ -56,6 +56,12 @@ export class User {
     required: true,
   })
   bookings: MongooseSchema.Types.ObjectId[];
+
+  @Prop({ default: Date.now })
+  createdAt: Date;
+
+  @Prop({ default: Date.now })
+  updatedAt: Date;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

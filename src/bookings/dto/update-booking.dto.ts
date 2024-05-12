@@ -15,6 +15,10 @@ export class UpdateBookingDto {
   id: string;
 
   @IsOptional()
+  @IsString()
+  tittle: string;
+
+  @IsOptional()
   @IsDate()
   @Transform(({ value }) => new Date(Date.parse(value)))
   startTime: Date;

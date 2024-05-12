@@ -23,12 +23,20 @@ export class Booking {
   @Prop({ required: false })
   comment: string;
 
+  @Prop({ required: true })
+  tittle: string;
+
   @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'User', required: true })
   user: Types.ObjectId;
-  // @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'Room', required: true })
-  // room: Types.ObjectId;
-  @Prop({ required: true })
-  room: string;
+
+  @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'Room', required: true })
+  room: Types.ObjectId;
+
+  @Prop({ default: Date.now })
+  createdAt: Date;
+
+  @Prop({ default: Date.now })
+  updatedAt: Date;
 }
 
 export const BookingSchema = SchemaFactory.createForClass(Booking);

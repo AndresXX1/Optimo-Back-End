@@ -10,6 +10,10 @@ export class CreateBookingDto {
   @IsString()
   room: string;
 
+  @IsNotEmpty()
+  @IsString()
+  tittle: string;
+
   @IsOptional()
   @IsString()
   comment: string;

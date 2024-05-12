@@ -18,6 +18,7 @@ import { DeleteAccountDto } from './dto/deleteAccount.dto';
 import { MailerService } from 'src/mailer/mailer.service';
 
 import { IRequestMail } from 'src/common/interfaces/requestMail.interface';
+import { Status } from 'src/common/enums/status.enum';
 
 @Injectable()
 export class AuthService {
@@ -47,6 +48,9 @@ export class AuthService {
     const user = await this.userService.findByEmailWithPassword(email);
     if (!user) {
       throw new NotFoundException(`User ${email} not found`);
+    }
+    if (user.status === Status.Banned) {
+      throw new UnauthorizedException(`User ${email} is banned`);
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password);

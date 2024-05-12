@@ -8,7 +8,7 @@ import * as mongoose from 'mongoose';
 
 import { InternalServerErrorException } from '@nestjs/common';
 import { User } from './schema/user.schema';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { UpdateUserDto } from './dto/update-user.dto';
 import * as bcrypt from 'bcrypt';
@@ -119,7 +119,7 @@ export class UserService {
 
   async getAllUsers() {
     try {
-      return await this.userModel.find();
+      return await this.userModel.find().populate('bookings');
     } catch (error) {
       throw new InternalServerErrorException(error);
     }
