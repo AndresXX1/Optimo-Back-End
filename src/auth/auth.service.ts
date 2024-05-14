@@ -68,6 +68,7 @@ export class AuthService {
               age: user.age,
                 addres: user.address,
                   gender: user.gender,
+                    phone: user.phone
            };
 
     return { access_Token: await this.jwtService.signAsync(payload) };
