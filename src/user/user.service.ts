@@ -13,10 +13,14 @@ import { InjectModel } from '@nestjs/mongoose';
 import { UpdateUserDto } from './dto/update-user.dto';
 import * as bcrypt from 'bcrypt';
 import { Role } from 'src/common/enums/rol.enum';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class UserService {
-  constructor(@InjectModel(User.name) private userModel: Model<User>) {}
+  constructor(
+    @InjectModel(User.name) private userModel: Model<User>,
+    private jwtService: JwtService,
+  ) {}
 
   async createUser(createUserDto: CreateUserDto): Promise<User> {
     try {
@@ -60,9 +64,21 @@ export class UserService {
         throw new NotFoundException('User not found');
       }
       console.log(updateUser);
-      return await this.userModel.findByIdAndUpdate(updateUser.id, updateUser, {
-        new: true,
-      });
+      const userUpdated = await this.userModel
+        .findByIdAndUpdate(updateUser.id, updateUser, {
+          new: true,
+        })
+        .lean();
+      const payload = {
+        email: userUpdated.email,
+        role: userUpdated.role,
+        name: userUpdated.name,
+      };
+
+      return {
+        ...userUpdated,
+        access_Token: await this.jwtService.signAsync(payload),
+      };
     } catch (error) {
       if (error instanceof mongoose.Error.CastError && error.path === '_id') {
         throw new BadRequestException('Invalid ObjectId format');
@@ -83,9 +99,21 @@ export class UserService {
           10,
         );
       }
-      return await this.userModel.findByIdAndUpdate(updateUser.id, updateUser, {
-        new: true,
-      });
+      const userUpdated = await this.userModel
+        .findByIdAndUpdate(updateUser.id, updateUser, {
+          new: true,
+        })
+        .lean();
+      const payload = {
+        email: userUpdated.email,
+        role: userUpdated.role,
+        name: userUpdated.name,
+      };
+
+      return {
+        ...userUpdated,
+        access_Token: await this.jwtService.signAsync(payload),
+      };
     } catch (error) {
       if (error instanceof mongoose.Error.CastError && error.path === '_id') {
         throw new BadRequestException('Invalid ObjectId format');

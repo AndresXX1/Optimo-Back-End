@@ -19,7 +19,7 @@ export class Room {
     location: string;
 
     @Prop({ required: true })
-    equipment: string[];
+    equipment: string;
 
     @Prop({ required: true })
     type: string;

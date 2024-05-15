@@ -38,6 +38,13 @@ export class AuthService {
       ...registerDto,
       password: await bcrypt.hash(registerDto.password, 10),
     });
+
+    const mail: IRequestMail = {
+      recipients: { name: registerDto.name, address: registerDto.email },
+      subject: 'Bienvenido',
+      html: `<p>Hola,</p>${registerDto.name}<p>Su cuenta ha sido creada exitosamente.</p><p>Saludos,</p><p>El equipo de soporte de <strong>${process.env.APP_NAME}</strong></p>`,
+    };
+    this.mailerService.sendEmail(mail);
     return {
       email: registerDto.email,
       name: registerDto.name,
@@ -70,7 +77,7 @@ export class AuthService {
                   gender: user.gender,
                     phone: user.phone
            };
-
+           
     return { access_Token: await this.jwtService.signAsync(payload) };
   }
   async requestResetPassword(requestResetPassword: RequestResetPasswordDto) {
@@ -83,7 +90,7 @@ export class AuthService {
     const mail: IRequestMail = {
       recipients: { name: user.name, address: email },
       subject: 'Reset Password',
-      html: `<p>Hola,</p><p>Se le ha enviado un token para restablecer su contraseña. Por favor, siga las instrucciones para actualizar su contraseña. <strong>${user.resetPasswordToken}</strong></p><p>Si usted no solicitó este cambio, por favor ignore este correo electrónico.</p><p>Saludos,</p><p>El equipo de soporte</p>`,
+      html: `<p>Hola,</p> ${user.name}<p>Se le ha enviado un token para restablecer su contraseña. Por favor, siga las instrucciones para actualizar su contraseña. <strong>${user.resetPasswordToken}</strong></p><p>Si usted no solicitó este cambio, por favor ignore este correo electrónico.</p><p>Saludos,</p><p>El equipo de soporte de <strong>${process.env.APP_NAME}</strong></p>`,
     };
     this.mailerService.sendEmail(mail);
     return user.save();
@@ -100,7 +107,7 @@ export class AuthService {
       recipients: { name: user.name, address: user.email },
       subject: 'Reset Password',
 
-      html: ` <p>Hola,</p><p>Su contraseña ha sido cambiada exitosamente. Si usted no realizó este cambio, por favor contacte con nosotros inmediatamente.</p><p>Saludos,</p><p>El equipo de soporte</p>`,
+      html: ` <p>Hola,</p>${user.name}<p>Su contraseña ha sido cambiada exitosamente. Si usted no realizó este cambio, por favor contacte con nosotros inmediatamente.</p><p>Saludos,</p><p>El equipo de soporte de <strong>${process.env.APP_NAME}</strong></p>`,
     };
     this.mailerService.sendEmail(mail);
     await user.save();
@@ -117,7 +124,7 @@ export class AuthService {
         recipients: { name: user.name, address: user.email },
         subject: 'Reset Password',
 
-        html: ` <p>Hola,</p><p>Su contraseña ha sido cambiada exitosamente. Si usted no realizó este cambio, por favor contacte con nosotros inmediatamente.</p><p>Saludos,</p><p>El equipo de soporte</p>`,
+        html: ` <p>Hola,</p>${user.name}<p>Su contraseña ha sido cambiada exitosamente. Si usted no realizó este cambio, por favor contacte con nosotros inmediatamente.</p><p>Saludos,</p><p>El equipo de soporte de <strong>${process.env.APP_NAME}</strong></p>`,
       };
       this.mailerService.sendEmail(mail);
       return { message: 'success' };
@@ -136,7 +143,7 @@ export class AuthService {
         recipients: { name: user.name, address: user.email },
         subject: 'Change Email',
 
-        html: ` <p>Hola,</p><p>Su Email ha sido cambiada exitosamente. Si usted no realizó este cambio, por favor contacte con nosotros inmediatamente.</p><p>Saludos,</p><p>El equipo de soporte</p>`,
+        html: ` <p>Hola,</p>${user.name}<p>Su Email ha sido cambiada exitosamente. Si usted no realizó este cambio, por favor contacte con nosotros inmediatamente.</p><p>Saludos,</p><p>El equipo de soporte de <strong>${process.env.APP_NAME}</strong></p>`,
       };
       this.mailerService.sendEmail(mail);
       return { message: 'success' };
@@ -153,7 +160,7 @@ export class AuthService {
         recipients: { name: user.name, address: user.email },
         subject: 'Delete Account',
 
-        html: ` <p>Hola,</p><p>Su Cuenta ha sido eliminada exitosamente. Si usted no realizó esta acción, por favor contacte con nosotros inmediatamente.</p><p>Saludos,</p><p>El equipo de soporte</p>`,
+        html: ` <p>Hola,</p>${user.name}<p>Su Cuenta ha sido eliminada exitosamente. Si usted no realizó esta acción, por favor contacte con nosotros inmediatamente.</p><p>Saludos,</p><p>El equipo de soporte de <strong>${process.env.APP_NAME}</strong></p>`,
       };
       this.mailerService.sendEmail(mail);
       return { message: 'success' };

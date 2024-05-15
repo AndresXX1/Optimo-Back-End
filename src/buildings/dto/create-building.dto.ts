@@ -1,4 +1,5 @@
-import { IsOptional, IsString, IsNotEmpty, IsArray, IsMongoId } from 'class-validator';
+import { IsString, IsNotEmpty } from 'class-validator';
+import { Room } from 'src/rooms/schema/rooms.schema';
 
 export class CreateBuildingDto {
   @IsString()
@@ -29,8 +30,6 @@ export class CreateBuildingDto {
   @IsNotEmpty()
   blueprints: string;
 
-  @IsOptional()
-  @IsArray()
-  @IsMongoId({ each: true })
-  rooms: string[]; // Corregido a 'rooms' y ajustado para permitir un array vacío
+  @IsNotEmpty()
+  room: Room[];
 }
