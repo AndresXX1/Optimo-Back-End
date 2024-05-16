@@ -27,7 +27,7 @@ export class Building {
   @Prop()
   blueprints: string;
 
-  @Prop({ required: true, type: [{type: mongoose.Schema.Types.ObjectId, ref: 'Room'}] })
+  @Prop({ type: [{type: mongoose.Schema.Types.ObjectId, ref: 'Room'}] })
   rooms: string[];
 }
 

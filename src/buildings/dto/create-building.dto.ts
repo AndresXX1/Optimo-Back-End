@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty } from 'class-validator';
+import { IsString, IsNotEmpty, IsOptional } from 'class-validator';
 import { Room } from 'src/rooms/schema/rooms.schema';
 
 export class CreateBuildingDto {
@@ -30,6 +30,6 @@ export class CreateBuildingDto {
   @IsNotEmpty()
   blueprints: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   room: Room[];
 }
