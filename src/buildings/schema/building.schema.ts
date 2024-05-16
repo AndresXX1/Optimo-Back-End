@@ -6,7 +6,7 @@ export type BuildingDocument = HydratedDocument<Building>;
 @Schema()
 export class Building {
 
-  @Prop({ required: true, unique: true })
+  @Prop({ required: true })
   name: string;
 
   @Prop({ required: true })
@@ -29,6 +29,12 @@ export class Building {
 
   @Prop({ type: [{type: mongoose.Schema.Types.ObjectId, ref: 'Room'}] })
   rooms: string[];
+
+  @Prop({ default: Date.now })
+  createdAt: Date;
+
+  @Prop({ default: Date.now })
+  updatedAt: Date;
 }
 
 export const BuildingSchema = SchemaFactory.createForClass(Building);

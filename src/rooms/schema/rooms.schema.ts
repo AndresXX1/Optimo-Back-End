@@ -19,22 +19,28 @@ export class Room {
     location: string;
 
     @Prop({ required: true })
-    equipment: string;
+    equipment: string[];
 
     @Prop({ required: true })
-    type: string;
+    type: string[];
 
     @Prop({ required: true })
     floorNumber: number;    
 
     @Prop()
-    images: string;
+    images: string[];
+
+    @Prop({ required: true })
+    plans: string;
 
     @Prop({ defaultOptions: ['Activo', 'Inactivo'] })
     state: string;
 
     @Prop({ default: Date.now })
     createdAt: Date;
+
+    @Prop({ default: Date.now })
+    updatedAt: Date;
 }
 
 export const RoomSchema = SchemaFactory.createForClass(Room);

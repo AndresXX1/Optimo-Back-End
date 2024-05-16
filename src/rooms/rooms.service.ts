@@ -2,15 +2,17 @@ import { Injectable } from '@nestjs/common';
 import { CreateRoomDto } from './dto/create-room.dto';
 import { UpdateRoomDto } from './dto/update-room.dto';
 import { InjectModel } from '@nestjs/mongoose';
-import { Room } from './schema/rooms.schema';
 import { Model } from 'mongoose';
+import { Room } from './schema/rooms.schema';
 import { Building } from 'src/buildings/schema/building.schema';
+import { Booking } from 'src/bookings/schema/booking.schema';
 
 @Injectable()
 export class RoomsService {
   constructor(
     @InjectModel(Room.name) private readonly roomModel: Model<Room>,
     @InjectModel(Building.name) private readonly buildingModel: Model<Building>,
+    @InjectModel(Booking.name) private readonly bookingModel: Model<Booking>,
   ) {}
 
   async createRoom(
@@ -18,16 +20,16 @@ export class RoomsService {
     createRoomDto: CreateRoomDto,
   ): Promise<Room> {
     // Find by ID
-    const floor = await this.buildingModel.findById(buildingId);
-    if (!floor) {
+    const building = await this.buildingModel.findById(buildingId);
+    if (!building) {
       throw new Error('El edificio especificado no existe.');
     }
     // Create a new room
     const createdRoom = await this.roomModel.create(createRoomDto);
     // Add the room to the floor
-    floor.rooms.push(createdRoom.id);
+    building.rooms.push(createdRoom.id);
     // Save the floor
-    await floor.save();
+    await building.save();
     return createdRoom;
   }
 
@@ -112,5 +114,37 @@ export class RoomsService {
     // Remove the room
     await this.roomModel.findByIdAndDelete(roomId);
     return 'Room removed';
+  }
+
+  async filterByDaysAndHours() {
+    // Implement the logic to filter rooms by days and hours
+  }
+
+  async rankingRoomsByBookings(): Promise<Room[]> {
+    // Implement the logic to rank rooms by bookings
+    const rooms = await this.roomModel.aggregate([
+      {
+        $lookup: {
+          from: 'bookings',
+          localField: '_id',
+          foreignField: 'roomId',
+          as: 'bookings',
+        },
+      },
+      {
+        $project: {
+          _id: 1,
+          name: 1,
+          totalBookings: { $size: '$bookings' },
+        },
+      },
+      {
+        $sort: { totalBookings: -1 },
+      },
+      {
+        $limit: 6,
+      },
+    ]);
+    return rooms;
   }
 }

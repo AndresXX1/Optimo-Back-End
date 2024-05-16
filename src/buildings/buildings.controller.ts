@@ -15,7 +15,7 @@ import { UpdateBuildingDto } from './dto/update-building.dto';
 export class BuildingsController {
   constructor(private readonly buildingsService: BuildingsService) {}
 
-  @Post()
+  @Post('/create')
   async create(@Body() createBuildingDto: CreateBuildingDto) {
     return await this.buildingsService.createBuilding(createBuildingDto);
   }

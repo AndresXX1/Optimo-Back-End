@@ -64,20 +64,8 @@ export class AuthService {
     if (!isPasswordValid) {
       throw new UnauthorizedException(`password is wrong`);
     }
-    const payload = { 
-      email: user.email,
-       role: user.role,
-        name: user.name,
-         userId: user.id,
-          image: user.profilePicture,
-           country: user.country,
-            lastname: user.lastName,
-              age: user.age,
-                addres: user.address,
-                  gender: user.gender,
-                    phone: user.phone
-           };
-           
+    const payload = { email: user.email, role: user.role, name: user.name };
+
     return { access_Token: await this.jwtService.signAsync(payload) };
   }
   async requestResetPassword(requestResetPassword: RequestResetPasswordDto) {

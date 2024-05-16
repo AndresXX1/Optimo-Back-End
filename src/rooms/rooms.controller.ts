@@ -45,4 +45,14 @@ export class RoomsController {
   remove(@Param('buildingId') buildingId: string, @Param('roomId') roomId: string) {
     return this.roomsService.remove(buildingId, roomId);
   }
+
+  @Get('/ranking')
+  findRanking() {
+    return this.roomsService.rankingRoomsByBookings();
+  }
+
+  @Get('/findAvailableRooms')
+  findAvailableRooms() {
+    return this.roomsService.filterByDaysAndHours();
+  }
 }

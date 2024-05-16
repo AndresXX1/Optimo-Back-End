@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Building } from './schema/building.schema';
@@ -14,8 +14,17 @@ export class BuildingsService {
   async createBuilding(
     createBuildingDto: CreateBuildingDto,
   ): Promise<Building> {
-    const createdBuilding = await this.buildingModel.create(createBuildingDto);
-    return createdBuilding;
+    try {
+      const newBuilding = await this.buildingModel.create(createBuildingDto);
+      console.log('Building created successfully!');
+      return newBuilding;
+    } catch (error) {
+      if (error.name === 'MongoError' && error.code === 11000) {
+        console.error('There was a duplicate key error');
+      } else {
+        console.error('An error occurred:', error);
+      }
+    }
   }
 
   async findAll(): Promise<Building[]> {
@@ -36,7 +45,10 @@ export class BuildingsService {
     return building;
   }
 
-  async updateBuilding(id: string, updateBuildingDto: UpdateBuildingDto): Promise<Building> {
+  async updateBuilding(
+    id: string,
+    updateBuildingDto: UpdateBuildingDto,
+  ): Promise<Building> {
     const buildingUpdated = await this.buildingModel
       .findByIdAndUpdate(id, updateBuildingDto, { new: true })
       .populate('rooms')
