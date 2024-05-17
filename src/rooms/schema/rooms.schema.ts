@@ -21,7 +21,7 @@ export class Room {
     @Prop({ required: true })
     equipment: string[];
 
-    @Prop({ required: true })
+    @Prop({ required: false })
     type: string[];
 
     @Prop({ required: true })
