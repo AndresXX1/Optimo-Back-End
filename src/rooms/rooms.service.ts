@@ -33,6 +33,11 @@ export class RoomsService {
     return createdRoom;
   }
 
+  async findOneById(buildingId: string, roomId: string): Promise<Room> {
+    // Encuentra la habitación por ID dentro del edificio específico
+    return this.roomModel.findOne({ _id: roomId, buildingId: buildingId }).exec();
+  }
+
   async findAllByBuilding(buildingId: string): Promise<Room[]> {
     const building = await this.buildingModel.findById(buildingId);
     if (!building) {
