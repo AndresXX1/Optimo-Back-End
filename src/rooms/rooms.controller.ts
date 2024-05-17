@@ -36,9 +36,9 @@ export class RoomsController {
     return this.roomsService.findOneByName(buildingId, name);
   }
 
-  @Get(':buildingId/:roomId')
+  @Get(':roomId')
   findOneById(@Param('buildingId') buildingId: string, @Param('roomId') roomId: string) {
-    return this.roomsService.findOneById(buildingId, roomId);
+    return this.roomsService.findOneById( roomId);
   }
 
   @Patch(':buildingId/types/:roomId')
