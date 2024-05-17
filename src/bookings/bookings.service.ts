@@ -27,6 +27,7 @@ import {
   startOfWeek,
 } from 'date-fns';
 import { UserService } from 'src/user/user.service';
+import { isValidObjectId, Types } from 'mongoose';
 
 @Injectable()
 export class BookingsService {
@@ -85,9 +86,13 @@ export class BookingsService {
   async findAllBy(filter: string, id: string) {
     if (filter in FindBookingBy) {
       if (filter === 'all') return await this.bookingModel.find();
-
-      const bookings = (await this.bookingModel.find({ [filter]: id })) || [];
-
+  
+      if (!isValidObjectId(id)) {
+        throw new BadRequestException('Invalid ObjectId');
+      }
+  
+      const bookings = await this.bookingModel.find({ [filter]: new Types.ObjectId(id) });
+  
       if (!bookings.length) {
         throw new NotFoundException('Bookings not found');
       }
