@@ -35,9 +35,9 @@ export class RoomsService {
 
   async findOneById(buildingId: string, roomId: string): Promise<Room> {
     // Encuentra la habitación por ID dentro del edificio específico
-    const room = await this.roomModel.findOne({ _id: roomId, buildingId: buildingId }).exec();
+    const room = await this.roomModel.findOne({ _id: roomId }).exec();
     if (!room) {
-        throw new Error('La habitación especificada no existe en el edificio.');
+        throw new Error('La habitación especificada no existe.');
     }
     return room;
 }

@@ -36,7 +36,7 @@ export class RoomsController {
     return this.roomsService.findOneByName(buildingId, name);
   }
 
-  @Get('/:buildingId/:roomId') // Nuevo endpoint para obtener información de un room por su ID
+  @Get(':buildingId/:roomId')
   findOneById(@Param('buildingId') buildingId: string, @Param('roomId') roomId: string) {
     return this.roomsService.findOneById(buildingId, roomId);
   }
